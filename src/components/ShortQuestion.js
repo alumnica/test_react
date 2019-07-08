@@ -1,8 +1,6 @@
 import React from "react";
-import Test from "./Test";
-import "../css/App.css";
 
-const App = () => {
+const ShortQuestion = () => {
   return (
     <div className="ui container">
       <Test />
@@ -10,4 +8,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default ShortQuestion;
