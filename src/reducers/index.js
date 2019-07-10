@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
-import longQuestionReducer from "./longQuestionReducer";
+import testReducer from "./test/testReducer";
 
 export default combineReducers({
-  longQuestion: longQuestionReducer
+  test: testReducer
 });

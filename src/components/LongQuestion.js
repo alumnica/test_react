@@ -49,7 +49,7 @@ const LongQuestion = props => {
       return (
         <Card
           key={option.id}
-          img={option.img}
+          imgUrl={option.img}
           text={option.text}
           value={option.value}
           checked={option.checked}
@@ -81,7 +81,7 @@ const LongQuestion = props => {
 };
 
 const mapStateToProps = state => {
-  return { longQuestion: state.longQuestion };
+  return { longQuestion: state.test.longQuestion };
 };
 
 export default connect(

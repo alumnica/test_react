@@ -1,10 +1,10 @@
 import {
-  FETCH_QUESTION,
-  UPDATE_RESULT,
-  POST_RESULT,
-  DELETE_QUESTION,
-  UPDATE_CHECK_OPTION_AND_RESULT
-} from "../actions/types";
+  LQ_FETCH_QUESTION,
+  LQ_UPDATE_RESULT,
+  LQ_POST_RESULT,
+  LQ_DELETE_QUESTION,
+  LQ_UPDATE_CHECK_OPTION_AND_RESULT
+} from "../../actions/types";
 
 const INITIAL_STATE = {
   question: "¿Pregunta pregunta pregunta pregunta pregunta pregunta?",
@@ -43,11 +43,11 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case FETCH_QUESTION:
+    case LQ_FETCH_QUESTION:
       return { ...state, isSignedIn: true, userId: action.payload };
-    case UPDATE_RESULT:
+    case LQ_UPDATE_RESULT:
       return { ...state, isSignedIn: false, userId: null };
-    case UPDATE_CHECK_OPTION_AND_RESULT:
+    case LQ_UPDATE_CHECK_OPTION_AND_RESULT:
       const previousResult = [...state.result];
       const optionChecked = action.payload.checked;
       let updatedResult;
@@ -68,9 +68,9 @@ export default (state = INITIAL_STATE, action) => {
           }
         }
       };
-    case POST_RESULT:
+    case LQ_POST_RESULT:
       return { ...state, isSignedIn: false, userId: null };
-    case DELETE_QUESTION:
+    case LQ_DELETE_QUESTION:
       return { INITIAL_STATE };
     default:
       return state;

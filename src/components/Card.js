@@ -1,9 +1,9 @@
 import React from "react";
 
 const Card = props => {
-  const extraContent = content => {
-    if (content) {
-      return <div className="extra content">{content}</div>;
+  const extraContent = extracontent => {
+    if (extracontent) {
+      return <div className="extra content">{extracontent}</div>;
     }
     return null;
   };
@@ -15,7 +15,7 @@ const Card = props => {
       className="card"
     >
       <div className="image">
-        <img alt={props.text} src={props.img} />
+        <img alt={props.text} src={props.imgUrl} />
       </div>
       <div className="content">
         <div className="header">{props.text}</div>
