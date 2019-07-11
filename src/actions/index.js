@@ -2,8 +2,8 @@ import {
   LQ_FETCH_QUESTION,
   LQ_UPDATE_RESULT,
   LQ_POST_RESULT,
-  LQ_DELETE_QUESTION,
-  LQ_UPDATE_CHECK_OPTION,
+  LQ_TOGGLE_CHECKED_OPTION,
+  LQ_UPDATE_OPTION_SELECTED_ORDER,
   SQ_FETCH_SET,
   SQ_UPDATE_PAIR_SELECTED_CARD,
   SQ_TOGGLE_CURRENT_PAIR,
@@ -16,27 +16,29 @@ import {
 
 export const updateCheckOption = id => {
   return {
-    type: LQ_UPDATE_CHECK_OPTION,
+    type: LQ_TOGGLE_CHECKED_OPTION,
     payload: id
   };
 };
 
-export const updateResult = id => async (dispatch, getState) => {
-  let result = getState().test.longQuestion.result;
-  if (result.includes(id)) {
-    result = result.filter(resultID => resultID !== id);
-  } else {
-    result.push(id);
-  }
+export const updateResult = id => {
   return {
     type: LQ_UPDATE_RESULT,
-    payload: result
+    payload: id
+  };
+};
+
+export const updateOptionSelecedOrder = id => {
+  return {
+    type: LQ_UPDATE_OPTION_SELECTED_ORDER,
+    payload: id
   };
 };
 
 export const clickCardLQ = id => async (dispatch, getState) => {
   await dispatch(updateResult(id));
   await dispatch(updateCheckOption(id));
+  await dispatch(updateOptionSelecedOrder(id));
 
   if (getState().test.longQuestion.result.length === 4) {
     await dispatch(toggleLongQuestion());

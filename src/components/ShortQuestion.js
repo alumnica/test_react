@@ -5,27 +5,6 @@ import Card from "./Card";
 import { nextPair } from "../actions";
 
 const ShortQuestion = props => {
-  // const renderOptions = question_set => {
-  //   const notUsedPairs = question_set.filter(
-  //     pair => pair.selected_card === null
-  //   );
-  //   if (notUsedPairs.length === 0) {
-  //     return <div>FIN</div>;
-  //   } else {
-  //     return Object.values(notUsedPairs[0].card_pair).map(card => {
-  //       return (
-  //         <Card
-  //           key={card.card_id}
-  //           imgUrl={card.img_url}
-  //           text={card.text}
-  //           value={card.moment_type}
-  //           onClick={() => "nada"}
-  //           // onClick={() => props.updateCheckOption(option.id)}
-  //         />
-  //       );
-  //     });
-  //   }
-  // };
   const renderOptions = current_pair => {
     if (current_pair) {
       return Object.values(current_pair.cards).map(card => {

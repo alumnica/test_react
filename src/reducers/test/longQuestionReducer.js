@@ -2,8 +2,8 @@ import {
   LQ_FETCH_QUESTION,
   LQ_UPDATE_RESULT,
   LQ_POST_RESULT,
-  LQ_DELETE_QUESTION,
-  LQ_UPDATE_CHECK_OPTION
+  LQ_TOGGLE_CHECKED_OPTION,
+  LQ_UPDATE_OPTION_SELECTED_ORDER
 } from "../../actions/types";
 
 const INITIAL_STATE = {
@@ -11,32 +11,32 @@ const INITIAL_STATE = {
   result: [],
   options: {
     1: {
-      id: 1,
-      img: "https://via.placeholder.com/200x300/EF4C45?text=Explorar",
+      card_id: 1,
+      img_url: "https://via.placeholder.com/200x300/EF4C45?text=Explorar",
       text: "Explorar",
-      value: "Explorar",
-      checked: false
+      checked: false,
+      selected_order: null
     },
     2: {
-      id: 2,
-      img: "https://via.placeholder.com/200x300/009097?text=Conectar",
+      card_id: 2,
+      img_url: "https://via.placeholder.com/200x300/009097?text=Conectar",
       text: "Conectar",
-      value: "Conectar",
-      checked: false
+      checked: false,
+      selected_order: null
     },
     3: {
-      id: 3,
-      img: "https://via.placeholder.com/200x300/21364B?text=Aplicar",
+      card_id: 3,
+      img_url: "https://via.placeholder.com/200x300/21364B?text=Aplicar",
       text: "Aplicar",
-      value: "Aplicar",
-      checked: false
+      checked: false,
+      selected_order: null
     },
     4: {
-      id: 4,
-      img: "https://via.placeholder.com/200x300/42B7A4?text=Bailar",
+      card_id: 4,
+      img_url: "https://via.placeholder.com/200x300/42B7A4?text=Bailar",
       text: "Bailar",
-      value: "Bailar",
-      checked: false
+      checked: false,
+      selected_order: null
     }
   }
 };
@@ -46,8 +46,14 @@ export default (state = INITIAL_STATE, action) => {
     case LQ_FETCH_QUESTION:
       return { ...state, isSignedIn: true, userId: action.payload };
     case LQ_UPDATE_RESULT:
-      return { ...state, result: action.payload };
-    case LQ_UPDATE_CHECK_OPTION:
+      let result = [...state.result];
+      if (result.includes(action.payload)) {
+        result = result.filter(resultID => resultID !== action.payload);
+      } else {
+        result.push(action.payload);
+      }
+      return { ...state, result: result };
+    case LQ_TOGGLE_CHECKED_OPTION:
       return {
         ...state,
         options: {
@@ -58,10 +64,22 @@ export default (state = INITIAL_STATE, action) => {
           }
         }
       };
+    case LQ_UPDATE_OPTION_SELECTED_ORDER:
+      let currentResultsOrder = [...state.result];
+      let index = currentResultsOrder.indexOf(action.payload);
+      index = index >= 0 ? index : null;
+      return {
+        ...state,
+        options: {
+          ...state.options,
+          [action.payload]: {
+            ...state.options[action.payload],
+            selected_order: index
+          }
+        }
+      };
     case LQ_POST_RESULT:
       return { ...state, isSignedIn: false, userId: null };
-    case LQ_DELETE_QUESTION:
-      return { INITIAL_STATE };
     default:
       return state;
   }

@@ -45,15 +45,15 @@ const LongQuestion = props => {
   };
 
   const renderCards = options => {
-    return options.map(({ id, img, text }) => {
+    return options.map(({ card_id, img_url, text }) => {
       return (
         <Card
-          key={id}
-          imgUrl={img}
+          key={card_id}
+          imgUrl={img_url}
           text={text}
-          cardStyle={borderStyle(id)}
-          extraContent={extraContent(id)}
-          onClick={() => props.clickCardLQ(id)}
+          cardStyle={borderStyle(card_id)}
+          extraContent={extraContent(card_id)}
+          onClick={() => props.clickCardLQ(card_id)}
           // onClick={() => props.updateCheckOption(option.id)}
         />
       );
@@ -62,7 +62,6 @@ const LongQuestion = props => {
 
   return (
     <div className="ui container">
-      <div>{props.longQuestion.result}</div>
       <h2 className="header">{props.longQuestion.question}</h2>
       <div className="ui link cards">
         {renderCards(Object.values(props.longQuestion.options))}
