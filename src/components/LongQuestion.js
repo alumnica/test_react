@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import Card from "./Card";
 import { connect } from "react-redux";
-import { updateCheckOption } from "../actions";
+import { clickCardLQ } from "../actions";
 
 const LongQuestion = props => {
-  const resultPosition = option => {
-    return props.longQuestion.result.findIndex(id => id === option.id);
+  const resultPosition = optionID => {
+    return props.longQuestion.result.findIndex(id => id === optionID);
   };
-  const extraContent = option => {
-    const position = resultPosition(option);
+  const extraContent = optionID => {
+    const position = resultPosition(optionID);
     if (position >= 0) {
       return (
         <>
@@ -23,8 +23,8 @@ const LongQuestion = props => {
     }
   };
 
-  const getBorderColor = option => {
-    switch (resultPosition(option)) {
+  const getBorderColor = optionID => {
+    switch (resultPosition(optionID)) {
       case 0:
         return "red";
       case 1:
@@ -36,55 +36,48 @@ const LongQuestion = props => {
     }
   };
 
-  const borderStyle = option => {
-    if (option.checked) {
-      let color = getBorderColor(option);
+  const borderStyle = optionID => {
+    if (props.longQuestion.result.includes(optionID)) {
+      let color = getBorderColor(optionID);
       return { border: "solid", color: color };
     }
     return null;
   };
 
   const renderCards = options => {
-    return options.map(option => {
+    return options.map(({ id, img, text }) => {
       return (
         <Card
-          key={option.id}
-          imgUrl={option.img}
-          text={option.text}
-          value={option.value}
-          checked={option.checked}
-          cardStyle={borderStyle(option)}
-          extraContent={extraContent(option)}
-          position={resultPosition(option)}
-          onClick={() => props.updateCheckOption(option)}
+          key={id}
+          imgUrl={img}
+          text={text}
+          cardStyle={borderStyle(id)}
+          extraContent={extraContent(id)}
+          onClick={() => props.clickCardLQ(id)}
           // onClick={() => props.updateCheckOption(option.id)}
         />
       );
     });
   };
-  const fullResults = result => {
-    if (result.length === 4) {
-      return <div>LLENO</div>;
-    }
-    return <div />;
-  };
 
   return (
     <div className="ui container">
+      <div>{props.longQuestion.result}</div>
       <h2 className="header">{props.longQuestion.question}</h2>
       <div className="ui link cards">
         {renderCards(Object.values(props.longQuestion.options))}
       </div>
-      {fullResults(props.longQuestion.result)}
     </div>
   );
 };
 
 const mapStateToProps = state => {
-  return { longQuestion: state.test.longQuestion };
+  return {
+    longQuestion: state.test.longQuestion
+  };
 };
 
 export default connect(
   mapStateToProps,
-  { updateCheckOption }
+  { clickCardLQ }
 )(LongQuestion);

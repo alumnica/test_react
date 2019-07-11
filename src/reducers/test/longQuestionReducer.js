@@ -3,7 +3,7 @@ import {
   LQ_UPDATE_RESULT,
   LQ_POST_RESULT,
   LQ_DELETE_QUESTION,
-  LQ_UPDATE_CHECK_OPTION_AND_RESULT
+  LQ_UPDATE_CHECK_OPTION
 } from "../../actions/types";
 
 const INITIAL_STATE = {
@@ -46,25 +46,15 @@ export default (state = INITIAL_STATE, action) => {
     case LQ_FETCH_QUESTION:
       return { ...state, isSignedIn: true, userId: action.payload };
     case LQ_UPDATE_RESULT:
-      return { ...state, isSignedIn: false, userId: null };
-    case LQ_UPDATE_CHECK_OPTION_AND_RESULT:
-      const previousResult = [...state.result];
-      const optionChecked = action.payload.checked;
-      let updatedResult;
-      if (optionChecked) {
-        updatedResult = previousResult.filter(id => id !== action.payload.id);
-      } else {
-        previousResult.push(action.payload.id);
-        updatedResult = [...previousResult];
-      }
+      return { ...state, result: action.payload };
+    case LQ_UPDATE_CHECK_OPTION:
       return {
         ...state,
-        result: updatedResult,
         options: {
           ...state.options,
-          [action.payload.id]: {
-            ...state.options[action.payload.id],
-            checked: !action.payload.checked
+          [action.payload]: {
+            ...state.options[action.payload],
+            checked: !state.options[action.payload].checked
           }
         }
       };

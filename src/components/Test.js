@@ -5,10 +5,17 @@ import ShortQuestion from "./ShortQuestion";
 
 const Test = props => {
   const renderQuestions = () => {
-    if (props.result.length === 4) {
-      return <ShortQuestion />;
-    } else {
+    if (props.status.isLoading) {
+      return <div>Loading...</div>;
+    }
+    if (props.status.longQuestion) {
       return <LongQuestion />;
+    }
+    if (props.status.shortQuestion) {
+      return <ShortQuestion />;
+    }
+    if (props.status.result) {
+      return <div>Resultado</div>;
     }
   };
 
@@ -20,7 +27,7 @@ const Test = props => {
   );
 };
 const mapStateToProps = state => {
-  return { result: state.test.longQuestion.result };
+  return { status: state.test.status };
 };
 export default connect(
   mapStateToProps,

@@ -3,44 +3,67 @@ import {
   LQ_UPDATE_RESULT,
   LQ_POST_RESULT,
   LQ_DELETE_QUESTION,
-  LQ_UPDATE_CHECK_OPTION_AND_RESULT,
+  LQ_UPDATE_CHECK_OPTION,
   SQ_FETCH_SET,
   SQ_UPDATE_PAIR_SELECTED_CARD,
-  SQ_TOGGLE_CURRENT_PAIR
+  SQ_TOGGLE_CURRENT_PAIR,
+  STATUS_TOGGLE_LOADING,
+  STATUS_TOGGLE_TEST,
+  STATUS_TOGGLE_SHORTQUESTION,
+  STATUS_TOGGLE_LONGQUESTION,
+  STATUS_TOGGLE_RESULT
 } from "./types";
 
-export const updateCheckOption = option => {
+export const updateCheckOption = id => {
   return {
-    type: LQ_UPDATE_CHECK_OPTION_AND_RESULT,
-    payload: option
+    type: LQ_UPDATE_CHECK_OPTION,
+    payload: id
   };
 };
 
-// export const fetchSet = () => async dispatch => {
-//   const response = await jsonPlaceholder.get("/posts");
-//TIENE QUE HACER TOGGLE CURRENT PAIR EN ALGUN SET
-//   dispatch({
-//     type: "FETCH_SET",
-//     payload: response.data
-//   });
-// };
-
-export const toggleCurrentPair = pairID => async dispatch => {
-  // const response = await jsonPlaceholder.get("/posts");
-
-  dispatch({
-    type: SQ_TOGGLE_CURRENT_PAIR,
-    payload: pairID
-  });
+export const updateResult = id => async (dispatch, getState) => {
+  let result = getState().test.longQuestion.result;
+  if (result.includes(id)) {
+    result = result.filter(resultID => resultID !== id);
+  } else {
+    result.push(id);
+  }
+  return {
+    type: LQ_UPDATE_RESULT,
+    payload: result
+  };
 };
 
-export const updatePairSelectedCard = (pairID, cardID) => async dispatch => {
-  dispatch({
-    type: SQ_UPDATE_PAIR_SELECTED_CARD,
-    payload: { pairID, cardID }
-  });
+export const clickCardLQ = id => async (dispatch, getState) => {
+  await dispatch(updateResult(id));
+  await dispatch(updateCheckOption(id));
+
+  if (getState().test.longQuestion.result.length === 4) {
+    await dispatch(toggleLongQuestion());
+    await dispatch(toggleShortQuestion());
+  }
 };
 
+//Status Actions
+export const toggleShortQuestion = () => {
+  return {
+    type: STATUS_TOGGLE_SHORTQUESTION
+  };
+};
+
+export const toggleLongQuestion = () => {
+  return {
+    type: STATUS_TOGGLE_LONGQUESTION
+  };
+};
+
+export const toggleResult = () => {
+  return {
+    type: STATUS_TOGGLE_RESULT
+  };
+};
+
+//ShortQuestion Actions
 export const nextPair = (currentPairID, cardID) => async (
   dispatch,
   getState
@@ -54,6 +77,23 @@ export const nextPair = (currentPairID, cardID) => async (
     await dispatch(toggleCurrentPair(pair[0].pair_id));
   } else {
     //postSet
+    await dispatch(toggleShortQuestion());
+    await dispatch(toggleResult());
   }
   await dispatch(toggleCurrentPair(currentPairID));
+};
+
+export const updatePairSelectedCard = (pairID, cardID) => async dispatch => {
+  dispatch({
+    type: SQ_UPDATE_PAIR_SELECTED_CARD,
+    payload: { pairID, cardID }
+  });
+};
+
+export const toggleCurrentPair = pairID => async dispatch => {
+  // const response = await jsonPlaceholder.get("/posts");
+  dispatch({
+    type: SQ_TOGGLE_CURRENT_PAIR,
+    payload: pairID
+  });
 };
