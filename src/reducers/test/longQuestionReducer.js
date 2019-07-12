@@ -2,7 +2,6 @@ import {
   LQ_FETCH_QUESTION,
   LQ_UPDATE_RESULT,
   LQ_POST_RESULT,
-  LQ_TOGGLE_CHECKED_OPTION,
   LQ_UPDATE_OPTION_SELECTED_ORDER
 } from "../../actions/types";
 
@@ -49,17 +48,6 @@ export default (state = INITIAL_STATE, action) => {
         result.push(action.payload);
       }
       return { ...state, result: result };
-    // case LQ_TOGGLE_CHECKED_OPTION:
-    //   return {
-    //     ...state,
-    //     options: {
-    //       ...state.options,
-    //       [action.payload]: {
-    //         ...state.options[action.payload],
-    //         checked: !state.options[action.payload].checked
-    //       }
-    //     }
-    //   };
     case LQ_UPDATE_OPTION_SELECTED_ORDER:
       let currentResultsOrder = [...state.result];
       let index = currentResultsOrder.indexOf(action.payload);

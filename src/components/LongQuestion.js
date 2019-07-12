@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Card from "./Card";
 import { connect } from "react-redux";
 import { clickCardLQ } from "../actions";
@@ -29,6 +29,8 @@ const LongQuestion = props => {
         return "green";
       case 3:
         return "yellow";
+      default:
+        return null;
     }
   };
 
