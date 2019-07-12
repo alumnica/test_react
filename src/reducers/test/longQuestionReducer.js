@@ -14,28 +14,24 @@ const INITIAL_STATE = {
       card_id: 1,
       img_url: "https://via.placeholder.com/200x300/EF4C45?text=Explorar",
       text: "Explorar",
-      checked: false,
       selected_order: null
     },
     2: {
       card_id: 2,
       img_url: "https://via.placeholder.com/200x300/009097?text=Conectar",
       text: "Conectar",
-      checked: false,
       selected_order: null
     },
     3: {
       card_id: 3,
       img_url: "https://via.placeholder.com/200x300/21364B?text=Aplicar",
       text: "Aplicar",
-      checked: false,
       selected_order: null
     },
     4: {
       card_id: 4,
       img_url: "https://via.placeholder.com/200x300/42B7A4?text=Bailar",
       text: "Bailar",
-      checked: false,
       selected_order: null
     }
   }
@@ -53,17 +49,17 @@ export default (state = INITIAL_STATE, action) => {
         result.push(action.payload);
       }
       return { ...state, result: result };
-    case LQ_TOGGLE_CHECKED_OPTION:
-      return {
-        ...state,
-        options: {
-          ...state.options,
-          [action.payload]: {
-            ...state.options[action.payload],
-            checked: !state.options[action.payload].checked
-          }
-        }
-      };
+    // case LQ_TOGGLE_CHECKED_OPTION:
+    //   return {
+    //     ...state,
+    //     options: {
+    //       ...state.options,
+    //       [action.payload]: {
+    //         ...state.options[action.payload],
+    //         checked: !state.options[action.payload].checked
+    //       }
+    //     }
+    //   };
     case LQ_UPDATE_OPTION_SELECTED_ORDER:
       let currentResultsOrder = [...state.result];
       let index = currentResultsOrder.indexOf(action.payload);

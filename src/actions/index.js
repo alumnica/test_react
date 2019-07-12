@@ -14,12 +14,12 @@ import {
   STATUS_TOGGLE_RESULT
 } from "./types";
 
-export const updateCheckOption = id => {
-  return {
-    type: LQ_TOGGLE_CHECKED_OPTION,
-    payload: id
-  };
-};
+// export const updateCheckOption = id => {
+//   return {
+//     type: LQ_TOGGLE_CHECKED_OPTION,
+//     payload: id
+//   };
+// };
 
 export const updateResult = id => {
   return {
@@ -37,7 +37,6 @@ export const updateOptionSelecedOrder = id => {
 
 export const clickCardLQ = id => async (dispatch, getState) => {
   await dispatch(updateResult(id));
-  await dispatch(updateCheckOption(id));
   await dispatch(updateOptionSelecedOrder(id));
 
   if (getState().test.longQuestion.result.length === 4) {

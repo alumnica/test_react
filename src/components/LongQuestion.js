@@ -4,12 +4,8 @@ import { connect } from "react-redux";
 import { clickCardLQ } from "../actions";
 
 const LongQuestion = props => {
-  const resultPosition = optionID => {
-    return props.longQuestion.result.findIndex(id => id === optionID);
-  };
-  const extraContent = optionID => {
-    const position = resultPosition(optionID);
-    if (position >= 0) {
+  const extraContent = position => {
+    if (position !== null) {
       return (
         <>
           <span className="right floated">{position + 1}</span>
@@ -23,8 +19,8 @@ const LongQuestion = props => {
     }
   };
 
-  const getBorderColor = optionID => {
-    switch (resultPosition(optionID)) {
+  const getBorderColor = order => {
+    switch (order) {
       case 0:
         return "red";
       case 1:
@@ -36,25 +32,24 @@ const LongQuestion = props => {
     }
   };
 
-  const borderStyle = optionID => {
-    if (props.longQuestion.result.includes(optionID)) {
-      let color = getBorderColor(optionID);
+  const borderStyle = order => {
+    if (order !== null) {
+      let color = getBorderColor(order);
       return { border: "solid", color: color };
     }
     return null;
   };
 
   const renderCards = options => {
-    return options.map(({ card_id, img_url, text }) => {
+    return options.map(({ card_id, img_url, text, selected_order }) => {
       return (
         <Card
           key={card_id}
           imgUrl={img_url}
           text={text}
-          cardStyle={borderStyle(card_id)}
-          extraContent={extraContent(card_id)}
+          cardStyle={borderStyle(selected_order)}
+          extraContent={extraContent(selected_order)}
           onClick={() => props.clickCardLQ(card_id)}
-          // onClick={() => props.updateCheckOption(option.id)}
         />
       );
     });
