@@ -39,7 +39,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case LQ_FETCH_QUESTION:
-      return { ...state, isSignedIn: true, userId: action.payload };
+      return action.payload;
     case LQ_UPDATE_RESULT:
       let result = [...state.result];
       if (result.includes(action.payload)) {

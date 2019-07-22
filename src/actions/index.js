@@ -1,5 +1,7 @@
+import alumnica from "../apis/alumnica";
+
 import {
-  // LQ_FETCH_QUESTION,
+  LQ_FETCH_QUESTION,
   LQ_UPDATE_RESULT,
   // LQ_POST_RESULT,
   LQ_UPDATE_OPTION_SELECTED_ORDER,
@@ -13,12 +15,18 @@ import {
   STATUS_TOGGLE_RESULT
 } from "./types";
 
-// export const updateCheckOption = id => {
-//   return {
-//     type: LQ_TOGGLE_CHECKED_OPTION,
-//     payload: id
-//   };
-// };
+//LongQuestion Actions
+export const lqFetchQuestion = userId => async dispatch => {
+  try {
+    const response = await alumnica.get(`/test-alumnica/colb/${userId}`);
+    return {
+      type: LQ_FETCH_QUESTION,
+      payload: response.data
+    };
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 export const updateResult = id => {
   return {
@@ -34,7 +42,7 @@ export const updateOptionSelecedOrder = id => {
   };
 };
 
-export const clickCardLQ = id => async (dispatch, getState) => {
+export const selectCardLongQuestion = id => async (dispatch, getState) => {
   await dispatch(updateResult(id));
   await dispatch(updateOptionSelecedOrder(id));
 

@@ -25,10 +25,12 @@ const ShortQuestion = props => {
     }
   };
   return (
-    <div className="ui container">
+    <>
       <h2 className="ui header">¿Cuál te gusta más?</h2>
-      <div className="ui link cards">{renderOptions(props.current_pair)}</div>
-    </div>
+      <div className="ui link two cards">
+        {renderOptions(props.current_pair)}
+      </div>
+    </>
   );
 };
 

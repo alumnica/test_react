@@ -1,9 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Card from "./Card";
 import { connect } from "react-redux";
-import { clickCardLQ } from "../actions";
+import { selectCardLongQuestion, lqFetchQuestion } from "../actions";
 
 const LongQuestion = props => {
+  const fetchLongQuestion = props.lqFetchQuestion;
+  const id = 1;
+
+  useEffect(
+    () => {
+      fetchLongQuestion(id);
+    },
+    [fetchLongQuestion, id]
+  );
+
   const extraContent = position => {
     if (position !== null) {
       return (
@@ -51,19 +61,20 @@ const LongQuestion = props => {
           text={text}
           cardStyle={borderStyle(selected_order)}
           extraContent={extraContent(selected_order)}
-          onClick={() => props.clickCardLQ(card_id)}
+          onClick={() => props.selectCardLongQuestion(card_id)}
         />
       );
     });
   };
 
   return (
-    <div className="ui container">
+    <>
+      {console.log(props.longQuestion)}
       <h2 className="header">{props.longQuestion.question}</h2>
-      <div className="ui link cards">
+      <div className="ui link two stackable cards">
         {renderCards(Object.values(props.longQuestion.options))}
       </div>
-    </div>
+    </>
   );
 };
 
@@ -75,5 +86,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { clickCardLQ }
+  { selectCardLongQuestion, lqFetchQuestion }
 )(LongQuestion);

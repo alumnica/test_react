@@ -12,7 +12,7 @@ const Card = props => {
       onClick={props.onClick}
       style={props.cardStyle}
       value={props.value}
-      className="card"
+      className="ui fluid card"
     >
       <div className="image">
         <img alt={props.text} src={props.imgUrl} />
