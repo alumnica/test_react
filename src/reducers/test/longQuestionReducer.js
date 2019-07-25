@@ -2,7 +2,8 @@ import {
   LQ_FETCH_QUESTION,
   LQ_UPDATE_RESULT,
   LQ_POST_RESULT,
-  LQ_UPDATE_OPTION_SELECTED_ORDER
+  LQ_UPDATE_OPTION_SELECTED_ORDER,
+  LQ_FILL_OUT_AFFINITIES
 } from "../../actions/types";
 
 const INITIAL_STATE = {
@@ -35,35 +36,51 @@ const INITIAL_STATE = {
     }
   }
 };
-
-export default (state = INITIAL_STATE, action) => {
+//NOTA: LQ_UPDATE_OPTION_SELECTED_ORDER sobre podriamos saltarnos ese paso y hacer todo directo con el result_helper, tener cuidadado con lazy render
+export default (state = {}, action) => {
   switch (action.type) {
     case LQ_FETCH_QUESTION:
       return action.payload;
     case LQ_UPDATE_RESULT:
-      let result = [...state.result];
-      if (result.includes(action.payload)) {
-        result = result.filter(resultID => resultID !== action.payload);
+      let result_helper = [...state.result_helper];
+      if (result_helper.includes(action.payload)) {
+        result_helper = result_helper.filter(
+          resultID => resultID !== action.payload
+        );
       } else {
-        result.push(action.payload);
+        result_helper.push(action.payload);
       }
-      return { ...state, result: result };
-    case LQ_UPDATE_OPTION_SELECTED_ORDER:
-      let currentResultsOrder = [...state.result];
+      return { ...state, result_helper: result_helper };
+    case LQ_UPDATE_OPTION_SELECTED_ORDER: {
+      let currentResultsOrder = [...state.result_helper];
+      let updatedState = { ...state };
+      for (let i = 0; i < currentResultsOrder.length; i++) {
+        updatedState.question.options[
+          currentResultsOrder[i]
+        ].selected_order = i;
+      }
+
       let index = currentResultsOrder.indexOf(action.payload);
+
       index = index >= 0 ? index : null;
-      return {
-        ...state,
-        options: {
-          ...state.options,
-          [action.payload]: {
-            ...state.options[action.payload],
-            selected_order: index
-          }
-        }
-      };
+      updatedState.question.options[action.payload].selected_order = index;
+      return updatedState;
+    }
     case LQ_POST_RESULT:
       return { ...state, isSignedIn: false, userId: null };
+    case LQ_FILL_OUT_AFFINITIES: {
+      let final_result = [...state.result_helper];
+      let updatedState = { ...state };
+
+      for (let i = 0; i < final_result.length; i++) {
+        let affinity_type = `affi_${
+          updatedState.question.options[final_result[i]].type_moment
+        }`;
+        updatedState[affinity_type] = i + 1;
+      }
+
+      return updatedState;
+    }
     default:
       return state;
   }

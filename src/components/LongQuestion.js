@@ -1,18 +1,11 @@
 import React, { useEffect } from "react";
 import Card from "./Card";
 import { connect } from "react-redux";
-import { selectCardLongQuestion, lqFetchQuestion } from "../actions";
+import { selectCardLongQuestion } from "../actions";
 
 const LongQuestion = props => {
   const fetchLongQuestion = props.lqFetchQuestion;
   const id = 1;
-
-  useEffect(
-    () => {
-      fetchLongQuestion(id);
-    },
-    [fetchLongQuestion, id]
-  );
 
   const extraContent = position => {
     if (position !== null) {
@@ -53,15 +46,16 @@ const LongQuestion = props => {
   };
 
   const renderCards = options => {
-    return options.map(({ card_id, img_url, text, selected_order }) => {
+    return options.map(({ id, img_url, text, selected_order }) => {
       return (
         <Card
-          key={card_id}
+          key={id}
           imgUrl={img_url}
           text={text}
+          selected_order={props.result}
           cardStyle={borderStyle(selected_order)}
           extraContent={extraContent(selected_order)}
-          onClick={() => props.selectCardLongQuestion(card_id)}
+          onClick={() => props.selectCardLongQuestion(id)}
         />
       );
     });
@@ -69,10 +63,9 @@ const LongQuestion = props => {
 
   return (
     <>
-      {console.log(props.longQuestion)}
-      <h2 className="header">{props.longQuestion.question}</h2>
+      <h2 className="header">{props.longQuestion.question.text}</h2>
       <div className="ui link two stackable cards">
-        {renderCards(Object.values(props.longQuestion.options))}
+        {renderCards(Object.values(props.longQuestion.question.options))}
       </div>
     </>
   );
@@ -80,11 +73,12 @@ const LongQuestion = props => {
 
 const mapStateToProps = state => {
   return {
-    longQuestion: state.test.longQuestion
+    longQuestion: state.test.longQuestion,
+    result: state.test.longQuestion.result_helper
   };
 };
 
 export default connect(
   mapStateToProps,
-  { selectCardLongQuestion, lqFetchQuestion }
+  { selectCardLongQuestion }
 )(LongQuestion);

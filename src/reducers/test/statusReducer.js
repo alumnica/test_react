@@ -7,9 +7,9 @@ import {
 } from "../../actions/types";
 
 const INITIAL_STATE = {
-  isLoading: false,
+  isLoading: true,
   test: true,
-  longQuestion: true,
+  longQuestion: false,
   shortQuestion: false,
   result: false
 };
@@ -17,7 +17,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case STATUS_TOGGLE_LOADING:
-      return {};
+      return { ...state, isLoading: !state.isLoading };
     case STATUS_TOGGLE_TEST:
       return {};
     case STATUS_TOGGLE_SHORTQUESTION:

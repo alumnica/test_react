@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 
 import Card from "./Card";
-import { nextPair } from "../actions";
+import { nextPair, lqFetchSet } from "../actions";
 
 const ShortQuestion = props => {
+  const fetchSet = props.lqFetchSet;
+  const id = 1;
+  //NOTA: por que fechea la pregunta test y no longquestion
+  useEffect(
+    () => {
+      fetchSet(id);
+    },
+    [fetchSet, id]
+  );
+
   const renderOptions = current_pair => {
     if (current_pair) {
       return Object.values(current_pair.cards).map(card => {
@@ -45,5 +55,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { nextPair }
+  { nextPair, lqFetchSet }
 )(ShortQuestion);

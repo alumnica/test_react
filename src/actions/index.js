@@ -3,12 +3,13 @@ import alumnica from "../apis/alumnica";
 import {
   LQ_FETCH_QUESTION,
   LQ_UPDATE_RESULT,
-  // LQ_POST_RESULT,
+  LQ_POST_RESULT,
   LQ_UPDATE_OPTION_SELECTED_ORDER,
-  // SQ_FETCH_SET,
+  LQ_FILL_OUT_AFFINITIES,
+  SQ_FETCH_SET,
   SQ_UPDATE_PAIR_SELECTED_CARD,
   SQ_TOGGLE_CURRENT_PAIR,
-  // STATUS_TOGGLE_LOADING,
+  STATUS_TOGGLE_LOADING,
   // STATUS_TOGGLE_TEST,
   STATUS_TOGGLE_SHORTQUESTION,
   STATUS_TOGGLE_LONGQUESTION,
@@ -19,13 +20,30 @@ import {
 export const lqFetchQuestion = userId => async dispatch => {
   try {
     const response = await alumnica.get(`/test-alumnica/colb/${userId}`);
-    return {
+    response.data.result_helper = [];
+    console.log(response.data);
+    dispatch({
       type: LQ_FETCH_QUESTION,
       payload: response.data
-    };
+    });
+    await dispatch(toggleLoading());
+    await dispatch(toggleLongQuestion());
   } catch (e) {
     console.log(e);
   }
+};
+export const lqPostResult = () => async (dispatch, getState) => {
+  const response = await alumnica.put(
+    "/test-alumnica/colb/1/",
+    getState().test.longQuestion
+  );
+  console.log(response);
+};
+
+export const lqFillOutAffinities = () => async dispatch => {
+  dispatch({
+    type: LQ_FILL_OUT_AFFINITIES
+  });
 };
 
 export const updateResult = id => {
@@ -46,7 +64,9 @@ export const selectCardLongQuestion = id => async (dispatch, getState) => {
   await dispatch(updateResult(id));
   await dispatch(updateOptionSelecedOrder(id));
 
-  if (getState().test.longQuestion.result.length === 4) {
+  if (getState().test.longQuestion.result_helper.length === 4) {
+    await dispatch(lqFillOutAffinities());
+    await dispatch(lqPostResult());
     await dispatch(toggleLongQuestion());
     await dispatch(toggleShortQuestion());
   }
@@ -71,7 +91,27 @@ export const toggleResult = () => {
   };
 };
 
+export const toggleLoading = () => {
+  return {
+    type: STATUS_TOGGLE_LOADING
+  };
+};
+
 //ShortQuestion Actions
+export const lqFetchSet = userId => async dispatch => {
+  try {
+    const response = await alumnica.get(
+      `http://127.0.0.1:8000/test-alumnica/card/${userId}`
+    );
+    console.log(response.data);
+    dispatch({
+      type: SQ_FETCH_SET,
+      payload: response.data
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
 export const nextPair = (currentPairID, cardID) => async (
   dispatch,
   getState
