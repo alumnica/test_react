@@ -19,7 +19,7 @@ import {
 //LongQuestion Actions
 export const lqFetchQuestion = userId => async dispatch => {
   try {
-    const response = await alumnica.get(`/test-alumnica/colb/${userId}`);
+    const response = await alumnica.get(`/test-alumnica/colb/${userId}/`);
     response.data.result_helper = [];
     console.log(response.data);
     dispatch({
@@ -101,9 +101,18 @@ export const toggleLoading = () => {
 export const lqFetchSet = userId => async dispatch => {
   try {
     const response = await alumnica.get(
-      `http://127.0.0.1:8000/test-alumnica/card/${userId}`
+      `http://127.0.0.1:8000/test-alumnica/card/${userId}/`
     );
     console.log(response.data);
+    //get key for first pair in set
+    let first_pair_key = Object.keys(response.data.pares)[0];
+    //Set first pair as current active pair
+    response.data.pares[first_pair_key].current_pair = true;
+    console.log(
+      Object.values(response.data.pares).filter(
+        pair => pair.current_pair === true
+      )[0]
+    );
     dispatch({
       type: SQ_FETCH_SET,
       payload: response.data
@@ -112,29 +121,30 @@ export const lqFetchSet = userId => async dispatch => {
     console.log(e);
   }
 };
-export const nextPair = (currentPairID, cardID) => async (
+export const nextPair = (currentPairID, cardType) => async (
   dispatch,
   getState
 ) => {
-  await dispatch(updatePairSelectedCard(currentPairID, cardID));
+  await dispatch(updatePairSelectedCard(currentPairID, cardType));
 
-  const pair = Object.values(getState().test.shortQuestion).filter(
-    pair => pair.selected_card === null
-  );
-  if (pair.length > 0) {
-    await dispatch(toggleCurrentPair(pair[0].pair_id));
+  const pairs_not_selected = Object.values(
+    getState().test.shortQuestion.pares
+  ).filter(pair => pair.type_moment_selected === "");
+  console.log(pairs_not_selected);
+  await dispatch(toggleCurrentPair(currentPairID));
+  if (pairs_not_selected.length > 0) {
+    await dispatch(toggleCurrentPair(pairs_not_selected[0].id));
   } else {
     //postSet
     await dispatch(toggleShortQuestion());
     await dispatch(toggleResult());
   }
-  await dispatch(toggleCurrentPair(currentPairID));
 };
 
-export const updatePairSelectedCard = (pairID, cardID) => async dispatch => {
+export const updatePairSelectedCard = (pairID, cardType) => async dispatch => {
   dispatch({
     type: SQ_UPDATE_PAIR_SELECTED_CARD,
-    payload: { pairID, cardID }
+    payload: { pairID, cardType }
   });
 };
 

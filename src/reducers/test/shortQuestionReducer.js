@@ -125,22 +125,19 @@ export default (state = {}, action) => {
   switch (action.type) {
     case SQ_FETCH_SET:
       return action.payload;
-    case SQ_TOGGLE_CURRENT_PAIR:
-      return {
-        ...state,
-        [action.payload]: {
-          ...state[action.payload],
-          current_pair: !state[action.payload].current_pair
-        }
-      };
-    case SQ_UPDATE_PAIR_SELECTED_CARD:
-      return {
-        ...state,
-        [action.payload.pairID]: {
-          ...state[action.payload.pairID],
-          selected_card: action.payload.cardID
-        }
-      };
+    case SQ_TOGGLE_CURRENT_PAIR: {
+      let updated_state = { ...state };
+      updated_state.pares[action.payload].current_pair = !updated_state.pares[
+        action.payload
+      ].current_pair;
+      return updated_state;
+    }
+    case SQ_UPDATE_PAIR_SELECTED_CARD: {
+      let updated_state = { ...state };
+      updated_state.pares[action.payload.pairID].type_moment_selected =
+        action.payload.cardType;
+      return updated_state;
+    }
     default:
       return state;
   }
