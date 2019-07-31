@@ -1,12 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Card from "./Card";
 import { connect } from "react-redux";
 import { selectCardLongQuestion } from "../actions";
 
 const LongQuestion = props => {
-  const fetchLongQuestion = props.lqFetchQuestion;
-  const id = 1;
-
   const extraContent = position => {
     if (position !== null) {
       return (

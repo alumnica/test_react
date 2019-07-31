@@ -6,36 +6,36 @@ import {
   LQ_FILL_OUT_AFFINITIES
 } from "../../actions/types";
 
-const INITIAL_STATE = {
-  question: "¿Pregunta pregunta pregunta pregunta pregunta pregunta?",
-  result: [],
-  options: {
-    1: {
-      card_id: 1,
-      img_url: "https://via.placeholder.com/200x300/EF4C45?text=Explorar",
-      text: "Explorar",
-      selected_order: null
-    },
-    2: {
-      card_id: 2,
-      img_url: "https://via.placeholder.com/200x300/009097?text=Conectar",
-      text: "Conectar",
-      selected_order: null
-    },
-    3: {
-      card_id: 3,
-      img_url: "https://via.placeholder.com/200x300/21364B?text=Aplicar",
-      text: "Aplicar",
-      selected_order: null
-    },
-    4: {
-      card_id: 4,
-      img_url: "https://via.placeholder.com/200x300/42B7A4?text=Bailar",
-      text: "Bailar",
-      selected_order: null
-    }
-  }
-};
+// const INITIAL_STATE = {
+//   question: "¿Pregunta pregunta pregunta pregunta pregunta pregunta?",
+//   result: [],
+//   options: {
+//     1: {
+//       card_id: 1,
+//       img_url: "https://via.placeholder.com/200x300/EF4C45?text=Explorar",
+//       text: "Explorar",
+//       selected_order: null
+//     },
+//     2: {
+//       card_id: 2,
+//       img_url: "https://via.placeholder.com/200x300/009097?text=Conectar",
+//       text: "Conectar",
+//       selected_order: null
+//     },
+//     3: {
+//       card_id: 3,
+//       img_url: "https://via.placeholder.com/200x300/21364B?text=Aplicar",
+//       text: "Aplicar",
+//       selected_order: null
+//     },
+//     4: {
+//       card_id: 4,
+//       img_url: "https://via.placeholder.com/200x300/42B7A4?text=Bailar",
+//       text: "Bailar",
+//       selected_order: null
+//     }
+//   }
+// };
 //NOTA: LQ_UPDATE_OPTION_SELECTED_ORDER sobre podriamos saltarnos ese paso y hacer todo directo con el result_helper, tener cuidadado con lazy render
 export default (state = {}, action) => {
   switch (action.type) {

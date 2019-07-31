@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import LongQuestion from "./LongQuestion";
 import ShortQuestion from "./ShortQuestion";
-import { selectCardLongQuestion, lqFetchQuestion } from "../actions";
+import { lqFetchQuestion } from "../actions";
 
 const Test = props => {
   const fetchLongQuestion = props.lqFetchQuestion;

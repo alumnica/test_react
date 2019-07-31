@@ -15,18 +15,18 @@ const ShortQuestion = props => {
     [fetchSet, id]
   );
 
-  const getCurrentPair = questionSet => {
-    if (questionSet === undefined) {
-      return false;
-    } else {
-      return Object.values(questionSet).filter(
-        pair => pair.current_pair === true
-      )[0];
-    }
-  };
+  // const getCurrentPair = active_pair => {
+  //   if (active_pair === undefined) {
+  //     return false;
+  //   } else {
+  //     // return Object.values(questionSet).filter(
+  //     //   pair => pair.current_pair === true
+  //     // )[0];
+  //     return;
+  //   }
+  // };
 
-  const renderOptions = questionSet => {
-    const current_pair = getCurrentPair(questionSet);
+  const renderOptions = current_pair => {
     if (current_pair) {
       return Object.values(current_pair.options).map(option => {
         return (
@@ -47,7 +47,7 @@ const ShortQuestion = props => {
     <>
       <h2 className="ui header">¿Cuál te gusta más?</h2>
       <div className="ui link two cards">
-        {renderOptions(props.question_set)}
+        {renderOptions(props.active_pair)}
       </div>
     </>
   );
@@ -55,7 +55,8 @@ const ShortQuestion = props => {
 
 const mapStateToProps = state => {
   return {
-    question_set: state.test.shortQuestion.pares
+    active_pair:
+      state.test.shortQuestion.pares[state.test.shortQuestion.active_pair_id]
   };
 };
 
